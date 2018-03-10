@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.logonpf.carros.api.RetrofitClient
 import com.example.logonpf.carros.R
 import com.example.logonpf.carros.api.CarroAPI
@@ -30,15 +31,15 @@ class ListaCarrosFragment : Fragment() {
     }
 
     fun carregarDados(){
-        val api = RetrofitClient.getInstance("https://carroapiscj.herokuapp.com/carro").create(CarroAPI::class.java)
+        val api = RetrofitClient.getInstance("https://carroapiscj.herokuapp.com").create(CarroAPI::class.java)
 
         api.buscarTodos().enqueue(object : Callback<List<Carro>> {
             override fun onFailure(call: Call<List<Carro>>?, t: Throwable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Toast.makeText(context, "Erro", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<List<Carro>>?, response: Response<List<Carro>>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                setupLista(response?.body())
             }
         })
 
