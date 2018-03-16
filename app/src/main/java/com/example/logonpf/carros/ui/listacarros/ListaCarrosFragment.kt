@@ -12,7 +12,9 @@ import com.example.logonpf.carros.api.RetrofitClient
 import com.example.logonpf.carros.R
 import com.example.logonpf.carros.api.CarroAPI
 import com.example.logonpf.carros.model.Carro
+import kotlinx.android.synthetic.main.erro.*
 import kotlinx.android.synthetic.main.fragment_lista_carros.*
+import kotlinx.android.synthetic.main.loading.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,22 +28,46 @@ class ListaCarrosFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        carregarDados()
         return inflater!!.inflate(R.layout.fragment_lista_carros, container, false)
     }
 
-    fun carregarDados(){
-        val api = RetrofitClient.getInstance("https://carroapiscj.herokuapp.com").create(CarroAPI::class.java)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        carregarDados()
+    }
 
-        api.buscarTodos().enqueue(object : Callback<List<Carro>> {
-            override fun onFailure(call: Call<List<Carro>>?, t: Throwable?) {
-                Toast.makeText(context, "Erro", Toast.LENGTH_LONG).show()
-            }
+    fun carregarDados() {
+        val api = RetrofitClient
+                .getInstance()//
+                //.getInstance("https://carroapiscj.herokuapp.com/")
+                .create(CarroAPI::class.java)
 
-            override fun onResponse(call: Call<List<Carro>>?, response: Response<List<Carro>>?) {
-                setupLista(response?.body())
-            }
-        })
+        loading.visibility = View.VISIBLE
+        api.buscarTodos()
+                .enqueue(object : Callback<List<Carro>> {
+                    override fun onFailure(call: Call<List<Carro>>?,
+                                           t: Throwable?) {
+                        containerErro.visibility = View.VISIBLE
+                        tvMensagemErro.text = t?.message
+                        loading.visibility = View.GONE
+                    }
+
+                    override fun onResponse(call: Call<List<Carro>>?,
+                                            response: Response<List<Carro>>?) {
+                        containerErro.visibility = View.GONE
+                        tvMensagemErro.text = ""
+
+                        if(response?.isSuccessful == true) {
+                            setupLista(response?.body())
+                        } else {
+                            containerErro.visibility = View.VISIBLE
+                            tvMensagemErro.text = response?.errorBody()
+                                    ?.charStream()?.readText()
+                        }
+                        loading.visibility = View.GONE
+                    }
+
+                })
 
     }
     fun setupLista(carros: List<Carro>?) {
