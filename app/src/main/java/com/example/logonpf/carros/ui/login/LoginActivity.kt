@@ -12,13 +12,15 @@ import com.example.logonpf.carros.BuildConfig
 import com.example.logonpf.carros.R
 import com.example.logonpf.carros.ui.main.MainActivity
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import android.widget.Toast
-import com.example.logonpf.carros.ui.main.MainActivity
-import org.junit.experimental.results.ResultMatchers.isSuccessful
 import com.google.android.gms.tasks.Task
 import android.support.annotation.NonNull
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+
 
 
 
@@ -31,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var email : EditText;
     lateinit var senha : EditText;
     lateinit var entrar : Button;
+    lateinit var myRef : DatabaseReference;
 
     lateinit var mFirebaseRemoteConfig : FirebaseRemoteConfig;
 
@@ -47,16 +50,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun configurarFirebase(){
+        /*
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build()
         mFirebaseRemoteConfig.setConfigSettings(configSettings)
-
+*/
+        val database = FirebaseDatabase.getInstance()
+        myRef = database.getReference("Clinica")
         conectarAoFireBase()
     }
 
     fun conectarAoFireBase(){
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+        /*
         mFirebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -71,7 +86,12 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT).show()
                     }
 
+                    val vMutableMap : MutableMap<String, Int>("foo",1; "bar" to 2)
+                    mFirebaseRemoteConfig.setDefaults(vMutableMap)
+
+
                 }
+        */
     }
 
     fun entrar(){
