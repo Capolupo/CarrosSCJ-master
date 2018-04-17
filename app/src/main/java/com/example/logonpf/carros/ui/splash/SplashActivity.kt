@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
 import com.example.logonpf.carros.R
+import com.example.logonpf.carros.ui.login.LoginActivity
 import com.example.logonpf.carros.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -25,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
         ivLogoSplash.startAnimation(animacao)
 
         Handler().postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             this.finish()
         }, 3000)
 
