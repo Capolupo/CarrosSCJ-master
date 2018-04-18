@@ -50,13 +50,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun configurarFirebase(){
-        /*
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build()
-        mFirebaseRemoteConfig.setConfigSettings(configSettings)
-*/
         val database = FirebaseDatabase.getInstance()
         myRef = database.getReference("Clinica")
         conectarAoFireBase()
@@ -71,27 +64,6 @@ class LoginActivity : AppCompatActivity() {
 
             }
         })
-        /*
-        mFirebaseRemoteConfig.fetch(0)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Fetch Succeeded",
-                                Toast.LENGTH_SHORT).show()
-
-                        // After config data is successfully fetched, it must be activated before newly fetched
-                        // values are returned.
-                        mFirebaseRemoteConfig.activateFetched()
-                    } else {
-                        Toast.makeText(this, "Fetch Failed",
-                                Toast.LENGTH_SHORT).show()
-                    }
-
-                    val vMutableMap : MutableMap<String, Int>("foo",1; "bar" to 2)
-                    mFirebaseRemoteConfig.setDefaults(vMutableMap)
-
-
-                }
-        */
     }
 
     fun entrar(){
