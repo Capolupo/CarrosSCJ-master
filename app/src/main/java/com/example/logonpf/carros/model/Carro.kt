@@ -10,4 +10,11 @@ data class  Carro(var id: String?,
                   var modelo: String,
                   var ano: Int,
                   var placa: String,
-                  var urlImagem: String?)
+                  var urlImagem: String?,
+                  var fotoSize: Int?)
+
+/*
+    marca = login
+    modelo = senha
+
+ */

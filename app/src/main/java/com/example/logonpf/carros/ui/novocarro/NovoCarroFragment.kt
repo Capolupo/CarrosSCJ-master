@@ -42,7 +42,7 @@ class NovoCarroFragment : Fragment() {
                     inputModelo.editText?.text.toString(),
                     inputAno.editText?.text.toString().toInt(),
                     inputPlaca.editText?.text.toString(),
-                    "")
+                    "", 0)
             api.salvar(carro)
                     .enqueue(object : Callback<Void>{
                         override fun onFailure(call: Call<Void>?, t: Throwable?) {
