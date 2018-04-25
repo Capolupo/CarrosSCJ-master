@@ -1,12 +1,18 @@
 package com.example.logonpf.carros.ui.listacarros
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.example.logonpf.carros.api.RetrofitClient
 import com.example.logonpf.carros.R
@@ -26,17 +32,52 @@ import retrofit2.Response
 class ListaCarrosFragment : Fragment() {
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_lista_carros, container, false)
+    lateinit var loading : View
+    lateinit var containerErro : View
+    lateinit var tvMensagemErro : TextView
+    lateinit var rvCarros : RecyclerView
+    lateinit var thisContext : Context
+    lateinit var progressBar : ProgressBar
+    var progress : Int = 0
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        thisContext = inflater.context
+        return inflater.inflate(R.layout.fragment_lista_carros, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loading = view.findViewById(R.id.loading)
+        containerErro = view.findViewById(R.id.containerErro)
+        tvMensagemErro = view.findViewById(R.id.tvMensagemErro)
+        rvCarros = view.findViewById(R.id.rvCarros)
+        progressBar = view.findViewById(R.id.loading_progressbar)
+
+        setProgressValue(progress)
         carregarDados()
     }
 
+
+    private fun setProgressValue(progress: Int) {
+
+        // set the progress
+        progressBar.setProgress(progress)
+        // thread is used to change the progress value
+        val thread = Thread(Runnable {
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+            setProgressValue(progress + 10)
+        })
+        thread.start()
+    }
+
     fun carregarDados() {
+
         val api = RetrofitClient
                 .getInstance()//
                 //.getInstance("https://carroapiscj.herokuapp.com/")
@@ -72,7 +113,7 @@ class ListaCarrosFragment : Fragment() {
     }
     fun setupLista(carros: List<Carro>?) {
         carros.let {
-            rvCarros.adapter = ListaCarrosAdapter(carros!!, context)
+            rvCarros.adapter = ListaCarrosAdapter(carros!!, thisContext)
             val layoutManager = LinearLayoutManager(context)
             rvCarros.layoutManager = layoutManager
         }

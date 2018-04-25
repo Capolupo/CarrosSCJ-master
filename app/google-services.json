@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "381323276944-3n87f3apjq38gjrleqsi8kf9ouuc4n8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.logonpf.carros",
+            "certificate_hash": "6909afb0e7d43db374e14cc26acffe678150afab"
+          }
+        },
+        {
           "client_id": "381323276944-jmu1r649bm1fpievbe8rhdket5eiljfa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381323276944-jmu1r649bm1fpievbe8rhdket5eiljfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

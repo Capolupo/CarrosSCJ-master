@@ -24,36 +24,49 @@ import retrofit2.Response
  */
 class NovoCarroFragment : Fragment() {
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater!!.inflate(R.layout.fragment_novo_carro, container, false)    }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_novo_carro, container, false)
+    fun camposVaziu():Boolean{
+        if(inputMarca.editText?.text.isNullOrEmpty()||
+        inputModelo.editText?.text.isNullOrEmpty()||
+        inputAno.editText?.text.isNullOrEmpty()||
+        inputPlaca.editText?.text.isNullOrEmpty())
+            return true
+        else
+            return false
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btSalvar.setOnClickListener {
-            val api = RetrofitClient
-                    .getInstance()
-                    .create(CarroAPI::class.java)
-            val carro = Carro(null,
-                    inputMarca.editText?.text.toString(),
-                    inputModelo.editText?.text.toString(),
-                    inputAno.editText?.text.toString().toInt(),
-                    inputPlaca.editText?.text.toString(),
-                    "", 0)
-            api.salvar(carro)
-                    .enqueue(object : Callback<Void>{
-                        override fun onFailure(call: Call<Void>?, t: Throwable?) {
-                            Log.e("CARRO",t?.message)
-                        }
-                        override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                            Toast.makeText(context,"Errou coloque aqui o Faustao",Toast.LENGTH_SHORT).show()
-                        }
-                    })
+            if (!camposVaziu()) {
+                val api = RetrofitClient
+                        .getInstance()
+                        .create(CarroAPI::class.java)
+                val carro = Carro(null,
+                        inputMarca.editText?.text.toString(),
+                        inputModelo.editText?.text.toString(),
+                        inputAno.editText?.text.toString().toInt(),
+                        inputPlaca.editText?.text.toString(),
+                        "", 0)
+                api.salvar(carro)
+                        .enqueue(object : Callback<Void> {
+                            override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                                Log.e("CARRO", t?.message)
+                            }
+
+                            override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
+                                Toast.makeText(context, "Errou coloque aqui o Faustao", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+            }
+            else{
+                Toast.makeText(context, "Preencha todos os campos", Toast.LENGTH_LONG).show()
+            }
         }
     }
+
     private fun limparCampos(){
         inputMarca.editText?.setText("")
         inputModelo.editText?.setText("")
