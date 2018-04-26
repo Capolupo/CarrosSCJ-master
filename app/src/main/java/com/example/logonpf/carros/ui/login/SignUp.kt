@@ -24,28 +24,33 @@ class SignUp : AppCompatActivity() {
     lateinit var confSenha : EditText
     lateinit var cadastrar : Button
 
+    lateinit var listDeCampos : List<EditText>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_siginup)
 
         email = findViewById(R.id.signup_email)
-        senha = findViewById(R.id.signup_senha)
-        confSenha = findViewById(R.id.signup_confsenha)
-        cadastrar = findViewById(R.id.signup_cadastrar)
+        listDeCampos += listOf<EditText>(email)
 
+        senha = findViewById(R.id.signup_senha)
+        listDeCampos += listOf<EditText>(senha)
+
+        confSenha = findViewById(R.id.signup_confsenha)
+        listDeCampos += listOf<EditText>(confSenha)
+
+        cadastrar = findViewById(R.id.signup_cadastrar)
         cadastrar.setOnClickListener{ cadastrarClinica() }
     }
 
     fun cadastrarClinica(){
-
-
-
-
-        Global.mAuth.createUserWithEmailAndPassword(
-                email.text.toString(),
-                senha.text.toString())
-                .addOnCompleteListener(this, OnCompleteListener<AuthResult> {
-                    task ->
+        if (Global.campoVazil(listDeCampos)){
+            Toast.makeText(applicationContext, "Preencha todos os campos", Toast.LENGTH_LONG).show()
+        }else {
+            Global.mAuth.createUserWithEmailAndPassword(
+                    email.text.toString(),
+                    senha.text.toString())
+                    .addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("FragmentActivity.TAG", "createUserWithEmail:success")
@@ -60,42 +65,7 @@ class SignUp : AppCompatActivity() {
                             //updateUI(null)
                         }
                     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        if(senha.text.toString().equals(confSenha.text.toString())){
-//            try {
-//                val clinica = Carro("0", email.text.toString(), senha.text.toString(), 0, "placa", "url", 50)
-//                Global.clinicaRef.child(email.text.toString().replace(".","2e")).setValue(clinica)
-//            }catch (e: Exception) {
-//                Log.e("ErroFirebase", e.toString())
-//            }
-//        }
-//        else{
-//            Toast.makeText(this,
-//                    "Senhas não conferem.\nPor favor digite a mesma\nsenha nos dois campos.",
-//                    Toast.LENGTH_LONG).show()
-//        }
-
+        }
     }
 
 

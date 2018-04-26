@@ -1,4 +1,5 @@
 package com.example.logonpf.carros.model
+import android.widget.EditText
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -32,6 +33,14 @@ import java.util.Arrays.asList
         fun configurarFirebase(){
             database = FirebaseDatabase.getInstance("https://carproject-7daf0.firebaseio.com/")
             clinicaRef = database.getReference("Clinica")
+        }
+
+        fun campoVazil(listDeCampos : List<EditText>) : Boolean{
+            for(i in listDeCampos.iterator()){
+                if (i.text.toString().isNullOrEmpty())
+                    return true
+            }
+            return true
         }
     }
 }
